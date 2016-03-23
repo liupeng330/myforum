@@ -21,7 +21,7 @@ public class UserService
     @Autowired
     private LoginLogDao loginLogDao;
 
-    public void registr(User user) throws UserExistException
+    public void register(User user) throws UserExistException
     {
         User u = this.getUserByUserName(user.getUserName());
         if(u != null)
@@ -34,6 +34,15 @@ public class UserService
             user.setUserType(1);
             userDao.save(user);
         }
+    }
+
+    /**
+     * 更新用户
+     * @param user
+     */
+    public void update(User user)
+    {
+        userDao.update(user);
     }
 
     public User getUserByUserName(String userName)
