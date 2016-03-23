@@ -30,7 +30,8 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 @RequestMapping("/login")
-public class LoginController extends BaseController {
+public class LoginController extends BaseController
+{
     /**
      * 自动注入
      */

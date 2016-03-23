@@ -45,7 +45,7 @@ public class Post
     }
 
     @Basic
-    @Column(name = "post_type")
+    @Column(name = "post_type", insertable = false, updatable = false)
     public Integer getPostType()
     {
         return postType;
