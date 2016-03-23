@@ -1,6 +1,5 @@
 package myforum.controller;
 
-
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -25,25 +24,25 @@ public class ForumFilter implements Filter
             "/register.jsp", "/register.html", "/board/listBoardTopics-",
             "/board/listTopicPosts-" };
 
-    // ② 执行过滤
+    // 执行过滤
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException
     {
-        // ②-1 保证该过滤器在一次请求中只被调用一次
+        // 1 保证该过滤器在一次请求中只被调用一次
         if (request != null && request.getAttribute(FILTERED_REQUEST) != null)
         {
+            // 放行此请求, 不做拦截
             chain.doFilter(request, response);
         }
         else
         {
-            // ②-2 设置过滤标识，防止一次请求多次过滤
+            // 2 设置过滤标识，防止一次请求多次过滤
             request.setAttribute(FILTERED_REQUEST, Boolean.TRUE);
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             User userContext = getSessionUser(httpRequest);
 
-            // ②-3 用户未登录, 且当前URI资源需要登录才能访问
-            if (userContext == null
-                    && !isURILogin(httpRequest.getRequestURI(), httpRequest))
+            // 3 用户未登录, 且当前URI资源需要登录才能访问
+            if (userContext == null && isURINeedToLogin(httpRequest.getRequestURI(), httpRequest))
             {
                 String toUrl = httpRequest.getRequestURL().toString();
                 if (!StringUtils.isEmpty(httpRequest.getQueryString()))
@@ -51,14 +50,15 @@ public class ForumFilter implements Filter
                     toUrl += "?" + httpRequest.getQueryString();
                 }
 
-                // ②-4将用户的请求URL保存在session中，用于登录成功之后，跳到目标URL
+                // 4 将用户的请求URL保存在session中，用于登录成功之后，跳到目标URL
                 httpRequest.getSession().setAttribute(LOGIN_TO_URL, toUrl);
 
-                // ②-5转发到登录页面
-                request.getRequestDispatcher("/login.jsp").forward(request,
-                        response);
+                // 5 拦截请求, 转发到登录页面
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
                 return;
             }
+
+            // 放行此请求, 不做拦截
             chain.doFilter(request, response);
         }
     }
@@ -74,19 +74,21 @@ public class ForumFilter implements Filter
      * @param request
      * @return
      */
-    private boolean isURILogin(String requestURI, HttpServletRequest request)
+    private boolean isURINeedToLogin(String requestURI, HttpServletRequest request)
     {
+        //判断当浏览器请求的是根目录"/"的时候, 不需要跳到登陆页面
         if (request.getContextPath().equalsIgnoreCase(requestURI)
                 || (request.getContextPath() + "/").equalsIgnoreCase(requestURI))
-            return true;
+            return false;
+
         for (String uri : INHERENT_ESCAPE_URIS)
         {
             if (requestURI != null && requestURI.indexOf(uri) >= 0)
             {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     protected User getSessionUser(HttpServletRequest request)

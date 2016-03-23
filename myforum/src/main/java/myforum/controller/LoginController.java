@@ -50,6 +50,7 @@ public class LoginController extends BaseController
         User dbUser = userService.getUserByUserName(user.getUserName());
         ModelAndView mav = new ModelAndView();
         mav.setViewName("forward:/login.jsp");
+
         if (dbUser == null)
         {
             mav.addObject("errorMsg", "用户名不存在");
@@ -67,15 +68,23 @@ public class LoginController extends BaseController
             dbUser.setLastIp(request.getRemoteAddr());
             dbUser.setLastVisit(new Timestamp(new Date().getTime()));
             userService.loginSuccess(dbUser);
-            setSessionUser(request,dbUser);
+
+            //将User对象放入到session中
+            setSessionUser(request, dbUser);
+
+            //从session中获取跳转到登陆页面前,用户所访问的URL
             String toUrl = (String)request.getSession().getAttribute(CommonConstant.LOGIN_TO_URL);
+            //从session中移除此URL
             request.getSession().removeAttribute(CommonConstant.LOGIN_TO_URL);
+
             //如果当前会话中没有保存登录之前的请求URL，则直接跳转到主页
             if(StringUtils.isEmpty(toUrl))
             {
                 toUrl = "/index.html";
             }
-            mav.setViewName("redirect:"+toUrl);
+
+            //跳转到登陆页面前, 用户所访问的URL
+            mav.setViewName("redirect:" + toUrl);
         }
         return mav;
     }
