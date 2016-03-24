@@ -90,7 +90,7 @@
 						<br>
 					</td>
 					<td>
-						${topic.replies}
+						${topic.topicReplies}
 						<br>
 						<br>
 					</td>

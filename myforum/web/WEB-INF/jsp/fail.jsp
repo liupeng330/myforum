@@ -7,7 +7,7 @@
 <title>操作失败</title>
 </head>
 <body>
-    操作失败!错误信息：${errorMsg}<br>
+    操作失败!错误信息：${ex}<br>
     <input type="button"  value="返回" onClick="window.history.go(-1);">
 </body>
 </html>

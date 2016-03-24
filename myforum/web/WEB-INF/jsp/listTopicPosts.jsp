@@ -27,7 +27,7 @@
 	</c:forEach>
 </table>
 <baobaotao:PageBar 
-	  pageUrl="/board/listTopicPosts-${boardForm.topicId}.html"
+	  pageUrl="/board/listTopicPosts-${topic.topicId}.html"
 	  pageAttrKey="pagedPost"/>
 
 	<script>

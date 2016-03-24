@@ -47,7 +47,7 @@ public class BoardManageController extends BaseController
      * @return
      */
     @RequestMapping(value = "/board/listBoardTopics-{boardId}", method = RequestMethod.GET)
-    public ModelAndView listBoardTopics(@PathVariable Integer boardId,@RequestParam(value = "pageNo", required = false) Integer pageNo)
+    public ModelAndView listBoardTopics(@PathVariable Integer boardId, @RequestParam(value = "pageNo", required = false) Integer pageNo)
     {
         ModelAndView view =new ModelAndView();
         Board board = forumService.getBoardById(boardId);
