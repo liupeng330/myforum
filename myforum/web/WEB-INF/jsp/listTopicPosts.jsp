@@ -13,7 +13,7 @@
 <%@ include file="includeTop.jsp" %>
 <div style="float=right"><a href="#replyZone">回复</a></div>
 <table border="1px" width="100%">
-	<c:forEach var="post" items="${pagedPost.result}">
+	<c:forEach var="post" items="${pagedPost.currentPageData}">
 		<tr>
 			<td colspan="2">${post.postTitle}</td>
 		</tr>
@@ -26,7 +26,8 @@
 		</tr>
 	</c:forEach>
 </table>
-<baobaotao:PageBar 
+
+<baobaotao:PageBar
 	  pageUrl="/board/listTopicPosts-${topic.topicId}.html"
 	  pageAttrKey="pagedPost"/>
 

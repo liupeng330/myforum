@@ -18,4 +18,3 @@ public class ForumHandlerExceptionResolver extends SimpleMappingExceptionResolve
         return super.doResolveException(httpServletRequest, httpServletResponse, o, e);
     }
 }
-

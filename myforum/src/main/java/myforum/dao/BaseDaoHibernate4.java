@@ -174,7 +174,7 @@ public abstract class BaseDaoHibernate4<T> implements BaseDao<T>
         if (totalCount < 1)
             return new Page();
         // 实际查询返回分页对象
-        int startIndex = Page.getStartOfPage(pageNo, pageSize);
+        int startIndex = Page.getStartIndexOfPage(pageNo, pageSize);
         Query query = createQuery(hql, values);
         List list = query.setFirstResult(startIndex).setMaxResults(pageSize).list();
 

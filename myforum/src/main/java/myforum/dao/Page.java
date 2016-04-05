@@ -14,9 +14,9 @@ public class Page implements Serializable {
 
     private int pageSize = DEFAULT_PAGE_SIZE; // 每页的记录数
 
-    private long start; // 当前页第一条数据在List中的位置,从0开始
+    private long startIndex; // 当前页第一条数据在List中的位置,从0开始
 
-    private List data; // 当前页中存放的记录,类型一般为List
+    private List currentPageData; // 当前页中存放的记录,类型一般为List
 
     private long totalCount; // 总记录数
 
@@ -30,16 +30,16 @@ public class Page implements Serializable {
     /**
      * 默认构造方法.
      *
-     * @param start	 本页数据在数据库中的起始位置
+     * @param startIndex	 本页数据在数据库中的起始位置
      * @param totalSize 数据库中总记录条数
      * @param pageSize  本页容量
-     * @param data	  本页包含的数据
+     * @param currentPageData	  本页包含的数据
      */
-    public Page(long start, long totalSize, int pageSize, List data) {
+    public Page(long startIndex, long totalSize, int pageSize, List currentPageData) {
         this.pageSize = pageSize;
-        this.start = start;
+        this.startIndex = startIndex;
         this.totalCount = totalSize;
-        this.data = data;
+        this.currentPageData = currentPageData;
     }
 
     /**
@@ -69,15 +69,15 @@ public class Page implements Serializable {
     /**
      * 取当前页中的记录.
      */
-    public List getResult() {
-        return data;
+    public List getCurrentPageData() {
+        return currentPageData;
     }
 
     /**
      * 取该页当前页码,页码从1开始.
      */
     public long getCurrentPageNo() {
-        return start / pageSize + 1;
+        return startIndex / pageSize + 1;
     }
 
     /**
@@ -97,10 +97,10 @@ public class Page implements Serializable {
     /**
      * 获取任一页第一条数据在数据集的位置，每页条数使用默认值.
      *
-     * @see #getStartOfPage(int,int)
+     * @see #getStartIndexOfPage(int,int)
      */
-    protected static int getStartOfPage(int pageNo) {
-        return getStartOfPage(pageNo, DEFAULT_PAGE_SIZE);
+    protected static int getStartIndexOfPage(int pageNo) {
+        return getStartIndexOfPage(pageNo, DEFAULT_PAGE_SIZE);
     }
 
     /**
@@ -110,7 +110,7 @@ public class Page implements Serializable {
      * @param pageSize 每页记录条数
      * @return 该页第一条数据
      */
-    public static int getStartOfPage(int pageNo, int pageSize) {
+    public static int getStartIndexOfPage(int pageNo, int pageSize) {
         return (pageNo - 1) * pageSize;
     }
 }
